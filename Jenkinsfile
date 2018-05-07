@@ -5,17 +5,15 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building..'
+		sh 'mvn clean package'
             }
         }
-        stage('Testing') {
-            steps {
-                echo 'Testing..'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
-            }
-        }
+
+	post {
+	    success {
+	    	echo 'Now Archiving...'
+		archiveArtifacts artifacts: '**/target/*.war'
+	    }
+	}
     }
 }
